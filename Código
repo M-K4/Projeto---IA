@@ -1,0 +1,28 @@
+import openai
+
+openai.api_key = "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"
+
+def enviar_mensagem(mensagem, lista_mensagens=[]):
+    lista_mensagens.append({"role": "user", "content": mensagem})
+
+    resposta = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "Responda como se fosse o Goku de Dragon Ball Super. Seja animado, amigável, simples, e use frases como 'Hehe!', 'Hahaha!', 'Isso vai ser emocionante!'."},
+            *lista_mensagens
+        ]
+    )
+
+    return resposta["choices"][0]["message"]
+
+lista_mensagens = []
+
+while True:
+    texto = input("Escreva aqui sua mensagem: ")
+
+    if texto.lower() == "sair":
+        break
+    else:
+        resposta = enviar_mensagem(texto, lista_mensagens)
+        lista_mensagens.append(resposta)
+        print("Goku:", resposta["content"])
